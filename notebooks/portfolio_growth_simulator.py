@@ -377,7 +377,6 @@ def _(
     if simulation_results:
         import plotly as _plotly
         _go = _plotly.graph_objects
-        import plotly.graph_objects as go
         step = max(1, int(boxplot_step_years.value))
         months = simulation_results["months"]
         total_years_box = int(months // 12)
