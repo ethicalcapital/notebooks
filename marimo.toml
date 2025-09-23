@@ -1,0 +1,25 @@
+# Marimo site configuration and theme for Ethical Capital
+
+[site]
+title = "Ethical Capital Notebooks"
+
+[theme]
+base = "light"
+
+[theme.palette]
+primary = "#581c87"       # ECIC Purple
+secondary = "#14b8a6"     # ECIC Teal
+success = "#2dd4bf"       # Teal Light
+warning = "#f59e0b"       # Amber
+danger = "#ef4444"        # Red
+background = "#ffffff"
+surface = "#f9fafb"
+text = "#111827"
+muted = "#4b5563"
+border = "#e5e7eb"
+
+[theme.fonts]
+ui = "Raleway, system-ui, -apple-system, Segoe UI, Roboto, Helvetica Neue, Arial, Noto Sans, Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol, sans-serif"
+heading = "Outfit, system-ui, -apple-system, Segoe UI, Roboto, Helvetica Neue, Arial, Noto Sans, sans-serif"
+monospace = "ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace"
+
