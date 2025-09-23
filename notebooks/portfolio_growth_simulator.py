@@ -20,7 +20,9 @@ def _():
     mo = marimo
     import numpy as np
     import pandas as pd
-    import plotly.graph_objects as go
+    # Import plotly at the top level so WASM export infers the correct package name
+    import plotly as _plotly
+    go = _plotly.graph_objects
     import warnings
 
     warnings.filterwarnings("ignore")
