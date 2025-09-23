@@ -42,6 +42,12 @@ jobs:
             # Export interactive HTML (WASM) so notebooks run on GitHub Pages
             python -m marimo export html-wasm "$f" --output "docs/${base}.html"
           done
+          # Ensure WASM assets are served by Pages
+          # marimo writes assets to the workspace; move them under docs/
+          if [ -d assets ]; then
+            cp -R assets "docs/"
+          fi
+          touch docs/.nojekyll
           python - <<'PY'
           import os, glob
           files = sorted(glob.glob('docs/*.html'))
