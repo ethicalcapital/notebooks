@@ -1,0 +1,5 @@
+[flake8]
+max-line-length = 120
+extend-ignore = E203
+per-file-ignores =
+    portfolio_growth_simulator.py: F811,E501,W291

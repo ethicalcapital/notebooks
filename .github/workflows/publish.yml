@@ -1,0 +1,134 @@
+name: Build and deploy marimo notebooks to GitHub Pages
+
+on:
+  push:
+    branches: ["main"]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: "pages"
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install marimo
+        run: |
+          python -m pip install --upgrade pip
+          pip install "marimo>=0.10.12,<0.11"
+
+      - name: Export notebooks to docs
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p docs
+          shopt -s nullglob
+          for f in notebooks/*.py; do
+            base=$(basename "$f" .py)
+            # Export interactive HTML (WASM) so notebooks run on GitHub Pages
+            python -m marimo export "$f" --to html-wasm --output "docs/${base}.html"
+          done
+          python - <<'PY'
+          import os, glob
+          files = sorted(glob.glob('docs/*.html'))
+          links = '\n'.join(
+              f'<li><a href="{os.path.basename(f)}">{os.path.basename(f)}</a></li>'
+              for f in files if os.path.basename(f) != 'index.html'
+          )
+          disclaimer = '''
+          <section style="max-width:960px;padding:1rem 1.25rem;margin:1.5rem auto;border:1px solid #e5e7eb;border-left-width:6px;border-left-color:#581c87;background:#fff;border-radius:6px;">
+            <h2 style="margin-top:0;color:#581c87;">IMPORTANT NOTICE AND DISCLAIMER</h2>
+            <p>This tool is provided for educational and illustrative purposes only. By accessing or using this tool, you acknowledge and agree to the following terms:</p>
+
+            <h3>NO ADVISORY RELATIONSHIP</h3>
+            <p>The use of this tool does not create an investment advisory relationship between you and Invest Vegan LLC dba Ethical Capital or any of its affiliates. No fiduciary duty arises from your use of this tool. Investment advisory services are offered exclusively through formal engagement agreements with Invest Vegan LLC dba Ethical Capital, a Utah-domiciled registered investment adviser.</p>
+
+            <h3>ILLUSTRATIVE PURPOSES ONLY</h3>
+            <p>All calculations, projections, and simulations are hypothetical illustrations of mathematical principles and do not predict or project the performance of any specific investment or investment strategy. Past performance does not guarantee future results. Actual results will vary and may be substantially different from those shown.</p>
+
+            <h3>ASSUMPTION LIMITATIONS</h3>
+            <p>This tool relies on user inputs and embedded assumptions that may not reflect your actual situation. Key assumptions include but are not limited to: expected returns, volatility estimates, correlation matrices, inflation rates, tax treatments, and withdrawal patterns. Small changes in assumptions can produce significantly different outcomes.</p>
+
+            <h3>NO PERSONALIZED ADVICE</h3>
+            <p>Nothing in this tool constitutes personalized investment, legal, tax, or accounting advice. The tool cannot consider your complete financial situation, risk tolerance, investment objectives, or other relevant personal circumstances. Consult qualified professionals before making any financial decisions.</p>
+
+            <h3>TECHNICAL LIMITATIONS</h3>
+            <ul>
+              <li>Wide dispersion of potential outcomes that may not be useful for planning</li>
+              <li>Sensitivity to input parameters and modeling assumptions</li>
+              <li>Inability to predict "black swan" events or unprecedented market conditions</li>
+              <li>Reliance on historical data that may not represent future market behavior</li>
+              <li>Potential overfitting to historical patterns</li>
+            </ul>
+
+            <h3>DATA AND CALCULATION ACCURACY</h3>
+            <p>While we strive for accuracy, we do not guarantee that calculations are error-free or that data sources are complete or current. Information from third-party sources cannot be independently verified. You are responsible for reviewing all outputs for reasonableness.</p>
+
+            <h3>INVESTMENT RISKS</h3>
+            <p>All investments involve risk, including potential loss of principal. Diversification and asset allocation strategies do not ensure profit or protect against loss. Some investment decisions will result in losses. There is no guarantee that any investment strategy will achieve its objectives.</p>
+
+            <h3>LIABILITY LIMITATIONS</h3>
+            <p><strong>TO THE MAXIMUM EXTENT PERMITTED BY LAW</strong>, INVEST VEGAN LLC DBA ETHICAL CAPITAL AND ITS AFFILIATES DISCLAIM ALL WARRANTIES, EXPRESS OR IMPLIED. IN NO EVENT SHALL WE BE LIABLE FOR ANY INDIRECT, INCIDENTAL, SPECIAL, OR CONSEQUENTIAL DAMAGES ARISING FROM YOUR USE OF THIS TOOL. Some jurisdictions do not allow limitation of certain warranties or damages, so some limitations may not apply to you.</p>
+
+            <h3>REGULATORY NOTICE</h3>
+            <p>This tool is not intended as a solicitation or offer to provide investment advisory services in any jurisdiction where we are not registered or where such solicitation would be unlawful. Your rights under federal and state securities laws are not waived by using this tool.</p>
+
+            <h3>INTELLECTUAL PROPERTY</h3>
+            <p>This tool and its contents are proprietary. Reproduction, modification, or distribution without express written permission is prohibited.</p>
+
+            <p>By continuing to use this tool, you accept full responsibility for your financial decisions and acknowledge that you have read, understood, and agreed to these terms.</p>
+            <p><em>Last Updated: ''' + __import__('datetime').date.today().isoformat() + '''</em><br>&copy; 2025 Invest Vegan LLC dba Ethical Capital. All rights reserved.</p>
+          </section>
+          '''
+
+          instructions = '''
+          <section style="max-width:960px;padding:1rem 1.25rem;margin:1rem auto;border:1px solid #e5e7eb;background:#fff;border-radius:6px;">
+            <h2 style="margin-top:0;color:#111827;">How to use</h2>
+            <ol>
+              <li>Open a notebook below (interactive HTML/WASM)</li>
+              <li>Accept the disclaimer at the top of the page</li>
+              <li>Ensure allocations sum to exactly 100%</li>
+              <li>Click <strong>Run simulation</strong> — the status panel will confirm when done</li>
+            </ol>
+            <p>If you see “Waiting to run”, complete the steps above and press Run.</p>
+          </section>
+          '''
+
+          title = 'Ethical Capital Notebooks'
+          html = (
+            f'<!doctype html><meta charset="utf-8"><title>{title}</title>'
+            f'<h1 style="margin:1rem auto;max-width:960px;padding:0 1.25rem;">{title}</h1>'
+            f'{disclaimer}{instructions}'
+            f'<main style="max-width:960px;margin:1rem auto;padding:0 1.25rem;"><h2>Notebooks</h2><ul>{links}</ul></main>'
+          )
+          open('docs/index.html','w').write(html)
+          PY
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: docs
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4
