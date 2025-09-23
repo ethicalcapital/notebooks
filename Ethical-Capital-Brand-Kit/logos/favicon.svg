@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <!-- Background circle -->
+  <circle cx="256" cy="256" r="256" fill="#553C9A"/>
+
+  <!-- Letter E -->
+  <path d="M 160 120 L 160 392 L 352 392 L 352 332 L 220 332 L 220 286 L 332 286 L 332 226 L 220 226 L 220 180 L 352 180 L 352 120 Z" fill="#ffffff"/>
+</svg>

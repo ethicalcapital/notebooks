@@ -1,0 +1,420 @@
+/*-- scss:defaults --*/
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;700;800;900&family=Raleway:wght@300;400;500;600;700&display=swap');
+
+// Override Bootstrap variables with brand colors
+$primary: #581c87;
+$secondary: #14b8a6;
+$success: #2dd4bf;
+$info: #14b8a6;
+$warning: #f59e0b;
+$danger: #ef4444;
+$light: #f9fafb;
+$dark: #581c87;
+
+// Typography
+$font-family-base: 'Raleway', sans-serif;
+$headings-font-family: 'Outfit', sans-serif;
+
+/*-- scss:rules --*/
+
+// ============================================================================
+// SITE-WIDE STYLES (applied to all pages)
+// ============================================================================
+
+// Basic logo sizing for all pages
+.navbar-brand img {
+  max-height: 60px;
+  width: auto;
+}
+
+@media (max-width: 991px) {
+  .navbar-brand img {
+    max-height: 45px;
+    width: auto;
+  }
+}
+
+// Palestinian solidarity announcement banner styling
+.quarto-announcement,
+.alert.alert-primary {
+  text-align: center !important;
+  font-weight: 600 !important;
+  font-size: 1rem !important;
+  padding: 0.75rem 1rem !important;
+}
+
+.alert-primary.quarto-announcement {
+  background-color: #581c87 !important;
+  border: none !important;
+  color: white !important;
+  margin-bottom: 0 !important;
+}
+
+// Compact list styling
+.compact-list ul {
+  margin-bottom: 0.5rem;
+}
+
+.compact-list ul li {
+  margin-bottom: 0.25rem;
+}
+
+.compact-list p {
+  margin-bottom: 0.5rem;
+}
+
+// Process cards styling
+.process-card {
+  background: #f8fafc;
+  padding: 2rem;
+  border-radius: 8px;
+  border-left: 4px solid #581c87;
+  height: 100%;
+}
+
+// Normal pages with fixed navigation - proper spacing
+body.nav-fixed:not(.homepage) {
+  main#quarto-document-content {
+    padding-top: 1.5rem;
+  }
+  
+  header#title-block-header {
+    margin-bottom: 2.5rem;
+    
+    .title {
+      font-size: 2.5rem;
+      font-weight: 700;
+      line-height: 1.2;
+      margin-bottom: 1rem;
+    }
+  }
+}
+
+// ============================================================================
+// HOMEPAGE-SPECIFIC STYLES
+// ============================================================================
+
+// Fix main content padding for homepage
+body.homepage {
+  main#quarto-document-content {
+    padding-top: 0 !important;
+    margin-top: 0 !important;
+  }
+}
+
+// Hide empty title block on homepage
+body.homepage #title-block-header,
+body.homepage #title-block-header:empty {
+  display: none !important;
+}
+
+// Hero banner styling
+.hero-banner {
+  background: linear-gradient(135deg, #14b8a6 0%, #581c87 40%, #6b21a8 100%);
+  color: white;
+  text-align: center;
+  margin-top: 0 !important;
+  padding-top: 0 !important;
+}
+
+.hero-banner .content-block {
+  padding: 3rem 2rem;
+}
+
+.hero-banner h1 {
+  color: white;
+  margin-bottom: 1.5rem;
+  font-size: 2.5rem;
+  font-weight: 700;
+}
+
+.hero-banner h2 {
+  text-decoration: none !important;
+  border-bottom: none !important;
+  margin-bottom: 1.5rem;
+}
+
+.hero-banner h3 {
+  color: white;
+  font-size: 1.2rem;
+  margin-bottom: 2rem;
+  opacity: 0.95;
+}
+
+.hero-banner .hero-buttons .btn {
+  margin: 0.5rem;
+}
+
+.hero-banner .hero-stats {
+  margin-top: 2rem;
+  flex-wrap: nowrap !important;
+}
+
+.hero-banner .hero-stat-item {
+  flex: 1;
+  min-width: 0;
+}
+
+.hero-banner .hero-stat {
+  font-size: 3rem;
+  font-weight: bold;
+  margin-bottom: 0.5rem;
+  color: white;
+  line-height: 1.1;
+}
+
+.hero-banner .hero-stat-desc {
+  opacity: 0.9;
+  font-size: 1rem;
+  color: white;
+}
+
+// Principles grid layout
+.principles-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 2rem;
+  margin: 2rem 0;
+  
+  h3 {
+    color: #581c87;
+    margin-bottom: 0.75rem;
+    font-size: 1.25rem;
+    font-weight: 600;
+  }
+  
+  ul {
+    list-style: none;
+    padding-left: 0;
+    margin: 0;
+    
+    li {
+      padding: 0.375rem 0;
+      color: #343a40;
+      font-size: 0.95rem;
+      
+      &:before {
+        content: '';
+        width: 4px;
+        height: 4px;
+        background-color: #14b8a6;
+        border-radius: 50%;
+        display: inline-block;
+        margin-right: 0.5rem;
+        vertical-align: middle;
+      }
+    }
+  }
+}
+
+// Strategy cards styling
+.strategy-card {
+  padding: 2rem;
+  border-radius: 12px;
+  text-align: center;
+  height: 100%;
+  position: relative;
+  overflow: hidden;
+  color: white;
+  background: linear-gradient(135deg, #581c87 0%, #6b21a8 100%);
+}
+
+.strategy-card::before {
+  content: '';
+  position: absolute;
+  top: -20px;
+  right: -20px;
+  width: 80px;
+  height: 80px;
+  background: rgba(255,255,255,0.1);
+  border-radius: 50%;
+}
+
+// Solutions table styling
+.solutions-table {
+  margin: 3rem 0 !important;
+}
+
+.solutions-table table {
+  width: 100% !important;
+  border-collapse: separate !important;
+  border-spacing: 0 !important;
+  margin: 2rem auto !important;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08) !important;
+  border-radius: 12px !important;
+  overflow: hidden !important;
+}
+
+.solutions-table th {
+  background: linear-gradient(135deg, #581c87 0%, #6b21a8 100%) !important;
+  color: white !important;
+  padding: 1.5rem 1rem !important;
+  font-weight: 700 !important;
+  font-size: 1.1rem !important;
+  text-align: center !important;
+  border: none !important;
+}
+
+.solutions-table td {
+  padding: 1.5rem 1rem !important;
+  background: rgba(255, 255, 255, 0.98) !important;
+  border: none !important;
+  vertical-align: top !important;
+}
+
+.solutions-table td:first-child {
+  border-left: 4px solid #581c87 !important;
+}
+
+.solutions-table td:nth-child(2) {
+  border-left: 4px solid #14b8a6 !important;
+}
+
+.solutions-table td:last-child {
+  border-left: 4px solid #7c3aed !important;
+}
+
+// CTA section styling
+.cta-section {
+  background: linear-gradient(135deg, #f8fafc 0%, #ffffff 100%);
+  padding: 3rem;
+  border-radius: 12px;
+  text-align: center;
+  margin: 3rem 0;
+  border: 2px solid #e2e8f0;
+}
+
+// Mobile responsiveness
+@media (max-width: 768px) {
+  .principles-grid {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+  
+  .hero-banner .content-block {
+    padding: 2rem 1rem;
+  }
+  
+  .hero-banner h1 {
+    font-size: 2rem;
+  }
+  
+  .hero-banner .hero-stat {
+    font-size: 2.2rem;
+  }
+  
+  .hero-banner .hero-stats {
+    gap: 1rem !important;
+  }
+  
+  .hero-banner .hero-stat-desc {
+    font-size: 0.875rem;
+  }
+}
+
+// ============================================================================
+// NEWSLETTER SIGNUP WIDGET STYLES
+// ============================================================================
+
+.newsletter-signup-widget {
+  background: linear-gradient(135deg, #f8fafc 0%, #ffffff 100%);
+  border: 2px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 2rem;
+  margin: 2rem 0;
+  text-align: center;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+}
+
+.newsletter-signup-widget h3 {
+  color: #581c87;
+  font-family: 'Outfit', sans-serif;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+  font-size: 1.5rem;
+}
+
+.newsletter-signup-widget p {
+  color: #6b7280;
+  margin-bottom: 1.5rem;
+  font-size: 1rem;
+  line-height: 1.5;
+}
+
+.newsletter-form-container {
+  max-width: 400px;
+  margin: 0 auto;
+}
+
+.input-container {
+  display: flex;
+  gap: 0;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.newsletter-email-input {
+  flex: 1;
+  padding: 0.75rem 1rem;
+  border: 2px solid #d1d5db;
+  border-right: none;
+  border-radius: 8px 0 0 8px;
+  font-size: 1rem;
+  font-family: 'Raleway', sans-serif;
+  background: white;
+  transition: all 0.2s ease;
+}
+
+.newsletter-email-input:focus {
+  outline: none;
+  border-color: #581c87;
+  box-shadow: 0 0 0 2px rgba(88, 28, 135, 0.1);
+}
+
+.newsletter-submit-btn {
+  padding: 0.75rem 1.5rem;
+  background: linear-gradient(135deg, #581c87 0%, #6b21a8 100%);
+  color: white;
+  border: 2px solid #581c87;
+  border-left: none;
+  border-radius: 0 8px 8px 0;
+  font-family: 'Outfit', sans-serif;
+  font-weight: 600;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  min-width: 120px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.newsletter-submit-btn:hover {
+  background: linear-gradient(135deg, #6b21a8 0%, #7c3aed 100%);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(88, 28, 135, 0.3);
+}
+
+// Mobile responsiveness for newsletter
+@media (max-width: 768px) {
+  .newsletter-signup-widget {
+    padding: 1.5rem;
+    margin: 1rem 0;
+  }
+  
+  .input-container {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  
+  .newsletter-email-input,
+  .newsletter-submit-btn {
+    border-radius: 6px !important;
+    border: 2px solid #d1d5db !important;
+  }
+  
+  .newsletter-submit-btn {
+    border-color: #581c87 !important;
+  }
+}

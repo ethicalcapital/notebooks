@@ -1,0 +1,254 @@
+Based on my comprehensive investigation of the marimo portfolio growth simulator repository, I'll now develop a detailed remediation strategy:
+
+## **MARIMO PORTFOLIO GROWTH SIMULATOR - REMEDIATION STRATEGY**
+
+### **CURRENT STATE ASSESSMENT**
+
+**✅ Strengths Identified:**
+- Well-structured marimo notebook with 34 cells implementing comprehensive Monte Carlo simulation
+- Working GitHub Actions workflow for WASM export to GitHub Pages
+- Proper UI gating already implemented (disclaimer acceptance + 100% allocation validation)
+- Brand colors integration from `Ethical-Capital-Brand-Kit/palette/palette.json`
+- English/Nerd mode toggle for UI complexity management
+- Comprehensive disclaimer and compliance framework
+- Script mode for headless diagnostics (`--diag` flag)
+
+**⚠️ Areas Needing Remediation:**
+- WASM export reliability concerns
+- Limited testing infrastructure (only basic import test)
+- Documentation gaps for technical implementation
+- No performance monitoring for WASM deployment
+- Potential UI/UX improvements for reliability
+
+---
+
+### **DETAILED REMEDIATION PLAN**
+
+#### **1. GITHUB PAGES WASM EXPORT RELIABILITY**
+
+**Priority: HIGH**
+**Target: Bulletproof WASM deployment pipeline**
+
+**Actions:**
+1. **Enhanced CI/CD Pipeline**
+   - Add WASM asset validation step to workflow
+   - Implement asset integrity checks (file sizes, MIME types)
+   - Add deployment verification step that actually loads the WASM page
+   - Include fallback mechanisms for asset serving issues
+
+2. **Asset Management Improvements**
+   - Ensure `.nojekyll` file is properly created (✅ already implemented)
+   - Add explicit WASM MIME type headers via `_headers` file for GitHub Pages
+   - Implement asset caching strategy with proper cache-busting
+
+3. **Deployment Monitoring**
+   - Add post-deployment health check that verifies notebook loads
+   - Implement automated screenshot testing of deployed pages
+   - Add performance monitoring for WASM load times
+
+**Files to create/modify:**
+- `.github/workflows/publish.yml` (enhance existing)
+- `docs/_headers` (new - for WASM MIME types)
+- `scripts/verify-deployment.py` (new - health checks)
+
+---
+
+#### **2. ENHANCED UI GATING & USER EXPERIENCE**
+
+**Priority: MEDIUM**
+**Target: Foolproof user journey and error prevention**
+
+**Current Gating (✅ Working):**
+- Disclaimer acceptance requirement
+- 100% allocation validation
+- Run button prevents auto-execution
+
+**Enhancements Needed:**
+1. **Progressive Disclosure Improvements**
+   - Add visual indicators for incomplete steps
+   - Implement guided tour for first-time users
+   - Enhanced error messaging with specific correction steps
+
+2. **Input Validation Hardening**
+   - Add client-side range validation for all numerical inputs
+   - Implement real-time allocation percentage feedback
+   - Add input sanity checks (e.g., reasonable portfolio values)
+
+3. **Session State Management**
+   - Implement local storage for user inputs
+   - Add "Save Configuration" / "Load Configuration" functionality
+   - Prevent data loss on accidental page refresh
+
+**Implementation Areas:**
+- Enhanced validation in allocation cells
+- Improved status messages in control panel
+- Progressive disclosure refinements
+
+---
+
+#### **3. COMPREHENSIVE TESTING INFRASTRUCTURE**
+
+**Priority: HIGH**
+**Target: Robust testing covering all simulator components**
+
+**Current Testing (⚠️ Minimal):**
+- Single test: `test_notebook_import.py` (import + app existence only)
+
+**Comprehensive Testing Strategy:**
+1. **Unit Tests**
+   - Monte Carlo engine validation tests
+   - Statistical distribution tests (Student-t, normal)
+   - Fee calculation accuracy tests
+   - Regime switching logic tests
+   - Block bootstrap implementation tests
+
+2. **Integration Tests**
+   - End-to-end simulation workflow tests
+   - UI component interaction tests
+   - Data export functionality tests
+   - Brand color integration tests
+
+3. **Performance Tests**
+   - Simulation performance benchmarks
+   - WASM load time tests
+   - Memory usage profiling
+   - Large simulation stress tests
+
+4. **Visual Regression Tests**
+   - Chart rendering consistency tests
+   - Brand color application verification
+   - Responsive layout tests
+
+**Files to create:**
+```
+tests/
+├── unit/
+│   ├── test_monte_carlo_engine.py
+│   ├── test_statistical_distributions.py
+│   ├── test_fee_calculations.py
+│   └── test_regime_switching.py
+├── integration/
+│   ├── test_simulation_workflow.py
+│   ├── test_ui_components.py
+│   └── test_data_export.py
+├── performance/
+│   ├── test_simulation_benchmarks.py
+│   └── test_wasm_performance.py
+└── visual/
+    ├── test_chart_rendering.py
+    └── test_brand_colors.py
+```
+
+---
+
+#### **4. DOCUMENTATION UPDATES**
+
+**Priority: MEDIUM**
+**Target: Comprehensive technical and user documentation**
+
+**Current Documentation (✅ Good foundation):**
+- `AGENTS.md` - Excellent process documentation
+- `README.md` - Basic usage instructions
+- Inline code documentation
+
+**Documentation Enhancements:**
+1. **Technical Implementation Guide**
+   - Monte Carlo methodology documentation
+   - Statistical parameter justification
+   - Architecture decision records (ADRs)
+   - Performance characteristics documentation
+
+2. **User Guides**
+   - Step-by-step tutorial with screenshots
+   - Troubleshooting guide for common issues
+   - FAQ section for simulator limitations
+   - Mobile usage guidelines
+
+3. **Deployment Documentation**
+   - WASM deployment troubleshooting
+   - GitHub Pages configuration guide
+   - Asset serving optimization guide
+   - Performance monitoring setup
+
+**Files to create/enhance:**
+- `docs/TECHNICAL_GUIDE.md` (new)
+- `docs/USER_TUTORIAL.md` (new)
+- `docs/TROUBLESHOOTING.md` (new)
+- `docs/PERFORMANCE.md` (new)
+- Enhanced `README.md` with better structure
+
+---
+
+#### **5. SUPPORTING NOTEBOOKS & TOOLS**
+
+**Priority: LOW**
+**Target: Enhanced ecosystem for simulation validation and research**
+
+**Potential Supporting Notebooks:**
+1. **Statistical Validation Notebook**
+   - Historical data analysis validation
+   - Parameter estimation documentation
+   - Backtesting against historical periods
+   - Distribution fitting validation
+
+2. **Performance Benchmark Notebook**
+   - Simulation speed analysis
+   - Memory usage profiling
+   - Comparison of different parameter sets
+   - WASM vs. local performance comparison
+
+3. **Research Playground Notebook**
+   - Parameter sensitivity analysis
+   - Alternative methodology exploration
+   - Scenario stress testing
+   - Academic research validation
+
+**Files to create:**
+- `notebooks/statistical_validation.py`
+- `notebooks/performance_benchmarks.py`
+- `notebooks/research_playground.py`
+
+---
+
+### **IMPLEMENTATION ROADMAP**
+
+**Phase 1: Critical Reliability (Week 1)**
+- Enhanced WASM export pipeline
+- Deployment verification system
+- Core unit testing framework
+
+**Phase 2: User Experience (Week 2)**
+- UI gating improvements
+- Enhanced error handling
+- Session state management
+
+**Phase 3: Testing & Validation (Week 3)**
+- Comprehensive test suite implementation
+- Performance benchmarking
+- Visual regression testing
+
+**Phase 4: Documentation & Ecosystem (Week 4)**
+- Technical documentation completion
+- User guide creation
+- Supporting notebooks development
+
+---
+
+### **SUCCESS METRICS**
+
+**Reliability Metrics:**
+- 99.9% WASM deployment success rate
+- <5 second page load time on GitHub Pages
+- Zero simulation calculation errors in test suite
+
+**User Experience Metrics:**
+- <2 minutes average time to first successful simulation
+- <1% user error rate on allocation validation
+- Positive user feedback on guided experience
+
+**Technical Metrics:**
+- >90% test coverage across all simulation components
+- <100ms simulation initialization time
+- <5MB total WASM asset size
+
+This remediation strategy focuses on bulletproofing the existing simulator while enhancing reliability, user experience, and maintainability through comprehensive testing and documentation.

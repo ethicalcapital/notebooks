@@ -1,10 +1,10 @@
 # /// script
-# requires-python = ">=3.9"
+# requires-python = ">=3.10"
 # dependencies = [
-#   "marimo>=0.10.12,<0.11",
-#   "numpy==2.3.3",
-#   "pandas==2.3.2",
-#   "plotly==6.3.0",
+#   "marimo>=0.16.1,<0.17",
+#   "numpy>=2.0,<3",
+#   "pandas>=2.2,<3",
+#   "plotly>=5.20,<6.1",
 # ]
 # ///
 
@@ -678,7 +678,7 @@ def _(mo):
     num_simulations = mo.ui.slider(
         start=10,
         stop=5000,
-        value=500,
+        value=10,
         step=10,
         label="Number of Simulations",
         show_value=True,

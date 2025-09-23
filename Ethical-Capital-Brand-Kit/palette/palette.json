@@ -1,0 +1,25 @@
+{
+  "palette": {
+    "ecic-purple": "#581c87",
+    "ecic-purple-light": "#6b46c1",
+    "ecic-teal": "#14b8a6",
+    "ecic-teal-light": "#2dd4bf",
+    "ecic-amber": "#f59e0b",
+    "ecic-red": "#ef4444",
+    "text-dark": "#111827",
+    "text-medium": "#4b5563",
+    "surface-white": "#ffffff",
+    "surface-light": "#f9fafb",
+    "border-gray": "#e5e7eb",
+    "footer-text": "#f3f4f6"
+  },
+  "semantic": {
+    "primary": "#581c87",
+    "success": "#2dd4bf",
+    "warning": "#f59e0b",
+    "light": "#f9fafb",
+    "background": "#ffffff",
+    "small": "ecic-logo-small",
+    "large": "ecic-logo"
+  }
+}

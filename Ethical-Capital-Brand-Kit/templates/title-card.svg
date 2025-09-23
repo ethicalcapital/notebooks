@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1920" height="1080" viewBox="0 0 1920 1080">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#14b8a6" />
+      <stop offset="40%" stop-color="#581c87" />
+      <stop offset="100%" stop-color="#6b21a8" />
+    </linearGradient>
+  </defs>
+  <rect width="1920" height="1080" fill="url(#bg)" />
+  <g transform="translate(960,420)" text-anchor="middle">
+    <image href="../logos/ecic-logo.svg" x="-220" y="-140" width="440" height="280" />
+  </g>
+  <g transform="translate(960,720)" text-anchor="middle" fill="#ffffff" font-family="Outfit, Raleway, Arial, sans-serif">
+    <text font-size="64" font-weight="700">Ethical Capital</text>
+    <text y="80" font-size="36" opacity="0.9">Concentrated ethical portfolios for investors who refuse to compromise</text>
+  </g>
+</svg>

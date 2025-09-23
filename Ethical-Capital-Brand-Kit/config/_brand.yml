@@ -1,0 +1,55 @@
+# Invest Vegan LLC DBA Ethical Capital - Brand System
+meta:
+  name: "Invest Vegan LLC DBA Ethical Capital"
+  link: "https://ethicic.com"
+
+# Color system - proper brand palette
+color:
+  palette:
+    ecic-purple: "#581c87"
+    ecic-purple-light: "#6b46c1"
+    ecic-teal: "#14b8a6"
+    ecic-teal-light: "#2dd4bf"
+    ecic-amber: "#f59e0b"
+    ecic-red: "#ef4444"
+    text-dark: "#111827"
+    text-medium: "#4b5563"
+    surface-white: "#ffffff"
+    surface-light: "#f9fafb"
+    border-gray: "#e5e7eb"
+    footer-text: "#f3f4f6"
+  
+  # Semantic color assignments
+  primary: ecic-purple
+  secondary: ecic-teal
+  success: ecic-teal-light
+  info: ecic-teal
+  warning: ecic-amber
+  danger: ecic-red
+  light: surface-light
+  dark: ecic-purple
+  background: surface-white
+  foreground: text-dark
+
+# Logo configuration
+logo:
+  images:
+    ecic-logo:
+      path: "assets/brand/logos/ecic-logo.svg"
+      alt: "Invest Vegan LLC DBA Ethical Capital"
+    ecic-logo-small:
+      path: "assets/brand/logos/ecic-logo.svg" 
+      alt: "Invest Vegan LLC DBA Ethical Capital"
+  small: ecic-logo-small
+  medium: ecic-logo
+  large: ecic-logo
+
+# Typography
+typography:
+  fonts:
+    - family: "Raleway"
+      source: google
+    - family: "Outfit"
+      source: google
+  base: "Raleway"
+  headings: "Outfit"

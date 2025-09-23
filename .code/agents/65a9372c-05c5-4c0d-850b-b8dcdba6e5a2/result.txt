@@ -1,0 +1,459 @@
+[2025-09-23T17:56:58] Code v0.2.155
+--------
+workdir: /Users/srvo/dev/notebooks
+model: gpt-5-codex
+provider: openai
+approval: never
+sandbox: danger-full-access
+reasoning effort: high
+reasoning summaries: auto
+--------
+[2025-09-23T17:56:58] User instructions:
+Plan the remediation and validation effort for the marimo portfolio_growth_simulator notebook in this repo. Include repository context (AGENTS.md processes, GitHub Pages export workflow, palette JSON). Focus on ensuring GitHub Pages WASM exports stay interactive, identify any notebook issues to investigate, testing requirements, documentation updates, and propose any supporting notebooks. Produce detailed steps and questions. Work read-only.
+
+[Running in read-only mode - no modifications allowed]
+
+[2025-09-23T17:57:03] thinking
+
+**Planning read-only inspection and remediation steps**
+[2025-09-23T17:57:04] exec bash -lc ls in /Users/srvo/dev/notebooks
+[2025-09-23T17:57:04] bash -lc ls succeeded in 27ms:
+__pycache__
+AGENTS.md
+android-chrome-192x192.png
+android-chrome-512x512.png
+apple-touch-icon.png
+assets
+diag_ci_local
+diag_out
+docs
+Ethical-Capital-Brand-Kit
+Ethical-Capital-Brand-Kit.zip
+favicon-16x16.png
+favicon-32x32.png
+favicon.ico
+files
+LICENSE
+logo.png
+manifest.json
+marimo-debug.log
+marimo.toml
+[2025-09-23T17:57:04] tokens used: 1762
+
+[2025-09-23T17:57:05] thinking
+
+**Opening AGENTS.md file**
+[2025-09-23T17:57:06] exec bash -lc "sed -n '1,160p' AGENTS.md" in /Users/srvo/dev/notebooks
+[2025-09-23T17:57:06] bash -lc "sed -n '1,160p' AGENTS.md" succeeded in 19ms:
+# Agent Notes (Marimo Notebooks)
+
+This repo contains marimo notebooks designed for public/brand‑ready presentation and export to GitHub Pages. Follow these conventions to keep notebooks robust, accessible, and compliant.
+
+## Always Run Checks
+- Run `uv run marimo check notebooks/` (or `marimo check notebooks/`) before handing off changes. (This avoids non-notebook Python files like tests/.)
+- Fix all `critical[multiple-definitions]` issues. Variables must be unique across cells. Use underscore‑prefixed locals (e.g., `_i`, `_col`, `_tmp`) for loop indices/scratch variables.
+- Run a syntax check: `python3 -m py_compile <notebook>.py`.
+
+## Marimo Coding Patterns
+- Do NOT access `.value` of a UI element in the same cell that creates it. Create UI in one cell, consume values in a downstream cell.
+- Avoid cross‑cell name collisions. If a variable name appears in multiple cells at top level, give each cell unique names or underscore locals.
+- Avoid in‑place mutation of shared arrays/dataframes across cells. Build new objects per cell.
+- Keep heavy compute behind a “Run” button. Don’t auto‑simulate on every slider change.
+- Import pattern to avoid lints: top‑level `import marimo`, then in the first cell `import marimo; mo = marimo` to provide `mo` while avoiding alias warnings.
+
+## UI/UX Conventions
+- Dual track: “English mode (simple)” vs “Nerd mode (detailed)”.
+  - English mode shows only essential inputs: Current Value, Annual Savings, Years, Risk Level (or Custom), Years until withdrawal, and Scenario highlight.
+  - Nerd mode reveals regimes, block bootstrap, distributions, log scale, band toggles, density controls, target value, etc.
+[2025-09-23T17:57:06] tokens used: 330
+
+[2025-09-23T17:57:08] thinking
+
+**Checking for GitHub Pages workflow**
+[2025-09-23T17:57:10] exec bash -lc "sed -n '1,200p' .github/workflows/publish.yml" in /Users/srvo/dev/notebooks
+[2025-09-23T17:57:10] bash -lc "sed -n '1,200p' .github/workflows/publish.yml" succeeded in 12ms:
+name: Build and deploy marimo notebooks to GitHub Pages
+
+on:
+  push:
+    branches: ["main"]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: "pages"
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+[2025-09-23T17:57:10] tokens used: 7455
+
+[2025-09-23T17:57:12] thinking
+
+**Viewing palette JSON file**
+[2025-09-23T17:57:14] exec bash -lc 'cat Ethical-Capital-Brand-Kit/palette/palette.json' in /Users/srvo/dev/notebooks
+[2025-09-23T17:57:14] bash -lc 'cat Ethical-Capital-Brand-Kit/palette/palette.json' succeeded in 18ms:
+{
+  "palette": {
+    "ecic-purple": "#581c87",
+    "ecic-purple-light": "#6b46c1",
+    "ecic-teal": "#14b8a6",
+    "ecic-teal-light": "#2dd4bf",
+    "ecic-amber": "#f59e0b",
+    "ecic-red": "#ef4444",
+    "text-dark": "#111827",
+    "text-medium": "#4b5563",
+    "surface-white": "#ffffff",
+    "surface-light": "#f9fafb",
+    "border-gray": "#e5e7eb",
+    "footer-text": "#f3f4f6"
+  },
+  "semantic": {
+    "primary": "#581c87",
+    "success": "#2dd4bf",
+    "warning": "#f59e0b",
+    "light": "#f9fafb",
+[2025-09-23T17:57:14] tokens used: 3662
+
+[2025-09-23T17:57:15] thinking
+
+**Inspecting portfolio_growth_simulator notebook start**
+[2025-09-23T17:57:16] exec bash -lc "sed -n '1,200p' notebooks/portfolio_growth_simulator.py" in /Users/srvo/dev/notebooks
+[2025-09-23T17:57:16] bash -lc "sed -n '1,200p' notebooks/portfolio_growth_simulator.py" succeeded in 17ms:
+# /// script
+# requires-python = ">=3.9"
+# dependencies = [
+#   "marimo>=0.10.12,<0.11",
+#   "numpy==2.3.3",
+#   "pandas==2.3.2",
+#   "plotly==6.3.0",
+# ]
+# ///
+
+import marimo
+
+__generated_with = "0.16.1"
+app = marimo.App(width="medium")
+
+
+@app.cell
+def _():
+    import marimo
+    mo = marimo
+[2025-09-23T17:57:16] tokens used: 451
+
+[2025-09-23T17:57:18] thinking
+
+**Continuing file review**
+[2025-09-23T17:57:18] exec bash -lc "sed -n '200,400p' notebooks/portfolio_growth_simulator.py" in /Users/srvo/dev/notebooks
+[2025-09-23T17:57:18] bash -lc "sed -n '200,400p' notebooks/portfolio_growth_simulator.py" succeeded in 16ms:
+
+        for sim in range(n_sims):
+            pv = initial
+
+            if use_reg:
+                if reg_mode == "Fixed":
+                    regimes = _np.array([fixed] * months, dtype=object)
+                else:
+                    regimes = _np.empty(months, dtype=object)
+                    regimes[0] = "Normal"
+                    for m in range(1, months):
+                        prev = regimes[m - 1]
+                        if prev == "Bull":
+                            stay = float(p_bull); others = (1.0 - stay) / 2.0; probs = [stay, others, others]
+                        elif prev == "Normal":
+                            stay = float(p_norm); others = (1.0 - stay) / 2.0; probs = [others, stay, others]
+                        else:
+                            stay = float(p_bear); others = (1.0 - stay) / 2.0; probs = [others, others, stay]
+                        regimes[m] = _np.random.choice(["Bull", "Normal", "Bear"], p=probs)
+            else:
+[2025-09-23T17:57:18] tokens used: 2105
+
+[2025-09-23T17:57:20] thinking
+
+**Continuing analysis on large file**
+[2025-09-23T17:57:20] exec bash -lc "sed -n '400,800p' notebooks/portfolio_growth_simulator.py" in /Users/srvo/dev/notebooks
+[2025-09-23T17:57:20] bash -lc "sed -n '400,800p' notebooks/portfolio_growth_simulator.py" succeeded in 19ms:
+                    jitter=0,
+                    pointpos=0,
+                    marker_color="rgba(100,149,237,0.6)",
+                    line=dict(color="rgba(100,149,237,1.0)"),
+                    hovertemplate="$%{y:,.0f}",
+                )
+            )
+
+        fig_boxes.update_layout(
+            title="Per-Year Distribution of Possible Outcomes (Boxplots)",
+            yaxis_title="Portfolio Value ($)",
+            xaxis_title="Year",
+            yaxis=dict(tickformat="$,.0f"),
+            template="plotly_white",
+            height=420,
+            showlegend=False,
+        )
+
+        mo.ui.plotly(fig_boxes)
+    return
+[2025-09-23T17:57:20] tokens used: 2371
+
+[2025-09-23T17:57:22] thinking
+
+**Continuing ongoing task**
+[2025-09-23T17:57:23] exec bash -lc "sed -n '800,1200p' notebooks/portfolio_growth_simulator.py" in /Users/srvo/dev/notebooks
+[2025-09-23T17:57:23] bash -lc "sed -n '800,1200p' notebooks/portfolio_growth_simulator.py" succeeded in 10ms:
+        step=0.05,
+        label="Sub-Manager Fee – Income (%)",
+        show_value=True,
+    )
+    return base_fee_all, sub_fee_diversified, sub_fee_income
+
+
+@app.cell
+def _(mo):
+    # Mode + Run + Reset
+    english_mode = mo.ui.switch(value=True, label="English (simple)")
+    run_button = mo.ui.button(label="Run simulation")
+    reset_button = mo.ui.button(label="Reset")
+    # Export in the same order as created to avoid mis-binding
+    return english_mode, run_button, reset_button
+
+
+@app.cell
+def _(mo):
+    # Assumptions strip for English mode (rendered later)
+[2025-09-23T17:57:23] tokens used: 4040
+
+[2025-09-23T17:57:26] thinking
+
+**Continuing file review**
+[2025-09-23T17:57:27] exec bash -lc "sed -n '1200,1600p' notebooks/portfolio_growth_simulator.py" in /Users/srvo/dev/notebooks
+[2025-09-23T17:57:27] bash -lc "sed -n '1200,1600p' notebooks/portfolio_growth_simulator.py" succeeded in 20ms:
+        import plotly as _plotly
+        _go = _plotly.graph_objects
+        mo.md("## Results")
+        try:
+            mo.callout(
+                f"Ran {simulation_results['all_results'].shape[0]} simulations for {simulation_results['months']/12:.1f} years.",
+                kind="success",
+            )
+        except Exception:
+            pass
+        # Create main visualization (fan chart)
+        fig = _go.Figure()
+
+        # Prepare data (real vs nominal)
+        time_index_plot = simulation_results["time_index"]
+        infl_plot = inflation_rate.value / 100.0
+        deflator_plot = (1.0 + infl_plot) ** time_index_plot
+
+        def adj(arr):
+            return arr / deflator_plot if show_real.value else arr
+[2025-09-23T17:57:27] tokens used: 14557
+
+[2025-09-23T17:57:29] thinking
+
+**Completing brand cell details**
+[2025-09-23T17:57:30] exec bash -lc "sed -n '1600,2000p' notebooks/portfolio_growth_simulator.py" in /Users/srvo/dev/notebooks
+[2025-09-23T17:57:30] bash -lc "sed -n '1600,2000p' notebooks/portfolio_growth_simulator.py" succeeded in 18ms:
+        percentiles_to_mark = [5, 25, 50, 75, 95]
+        colors = ["red", "orange", "blue", "green", "darkgreen"]
+
+        for perc_mark, color in zip(percentiles_to_mark, colors):
+            val = np.percentile(final_vals_hist, perc_mark)
+            fig_dist.add_vline(
+                x=val,
+                line_dash="dash" if perc_mark in [5, 95] else "solid",
+                line_color=brand.get("muted", color),
+                annotation_text=f"{perc_mark}th %ile",
+                annotation_position="top",
+            )
+
+        # Target line and exceedance probability
+        target_hist = float(target_final_value.value)
+        if target_hist > 0:
+            target_eff_hist = (
+                target_hist / ((1.0 + infl_hist) ** horizon_years_hist)
+                if show_real.value
+                else target_hist
+[2025-09-23T17:57:30] tokens used: 7608
+
+[2025-09-23T17:57:34] thinking
+
+**Identifying cleanup and branding needs**
+[2025-09-23T17:57:35] exec bash -lc 'rg --line-number "brand" notebooks/portfolio_growth_simulator.py' in /Users/srvo/dev/notebooks
+[2025-09-23T17:57:35] bash -lc 'rg --line-number "brand" notebooks/portfolio_growth_simulator.py' succeeded in 36ms:
+1180:    brand,
+1228:        # Brand-aware colors (fallbacks are already set in brand cell)
+1229:        color_blue = brand.get("primary", "#0072B2")
+1230:        color_orange = brand.get("accent", "#E69F00")
+1231:        color_gray = brand.get("muted", "#999999")
+1232:        color_lightgray = brand.get("band_fill_outer", "rgba(160,160,160,0.35)")
+1411:                                line=dict(color=brand.get("path_gray", "rgba(0,0,0,0.07)"), width=0.7),
+1431:                            line=dict(color=brand.get("path_gray", "rgba(0,0,0,0.07)"), width=0.7),
+1565:    brand,
+1594:                marker_color=brand.get("accent", "#14b8a6"),
+1608:                line_color=brand.get("muted", color),
+1625:                line_color=brand.get("primary", "#581c87"),
+1655:    brand,
+1685:                line=dict(color=brand.get("accent", "#14b8a6"), width=2),
+1702:                line_color=brand.get("primary", "#581c87"),
+1725:    brand,
+1778:                    line=dict(color=brand.get("accent", "#14b8a6"), width=2),
+1780:                    fillcolor=brand.get("band_fill", "rgba(120,120,120,0.35)"),
+1817:                        marker_color=brand.get("warning", "#f59e0b"),
+2043:    # Load Ethical Capital brand palette (JSON), with safe fallbacks
+[2025-09-23T17:57:35] tokens used: 32037
+
+[2025-09-23T17:57:38] thinking
+
+**Examining brand cell section**
+[2025-09-23T17:57:39] exec bash -lc "sed -n '2000,2100p' notebooks/portfolio_growth_simulator.py" in /Users/srvo/dev/notebooks
+[2025-09-23T17:57:39] bash -lc "sed -n '2000,2100p' notebooks/portfolio_growth_simulator.py" succeeded in 22ms:
+
+    1. **Use Block Bootstrapping**: Sample 3-month blocks from historical data rather than individual monthly returns to preserve serial correlation
+
+    2. **Implement Fat Tails**: Use Student's t-distribution with 5-7 degrees of freedom rather than normal distribution, or mixture models combining normal and jump components
+
+    3. **Dynamic Correlations**: Increase correlations by this formula during drawdowns:
+       ```
+       Crisis_Correlation = Normal_Correlation + 0.3 × (1 - Normal_Correlation) × Market_Stress_Indicator
+       ```
+
+    4. **Rebalancing Assumptions**:
+       - 25-Stock: Quarterly rebalancing with 2% threshold triggers
+       - GTAA: Monthly momentum rebalancing
+       - Income: Annual rebalancing or 5% deviation triggers
+
+    5. **Cost Adjustments**:
+       - 25-Stock: 1.5% annual fees + 0.5% trading costs
+       - GTAA: 0.8% management fee + 0.3% trading costs  
+       - Income: 0.5% fees + 0.1% trading costs
+
+[2025-09-23T17:57:39] tokens used: 7110
+
+[2025-09-23T17:57:42] thinking
+
+**Continuing final section**
+[2025-09-23T17:57:45] exec bash -lc "sed -n '2100,2400p' notebooks/portfolio_growth_simulator.py" in /Users/srvo/dev/notebooks
+[2025-09-23T17:57:45] bash -lc "sed -n '2100,2400p' notebooks/portfolio_growth_simulator.py" succeeded in 13ms:
+    if any(flag in _sys.argv for flag in ("--diag", "--script")):
+        import argparse as _argparse
+        import os as _os
+        import numpy as _np
+        import pandas as _pd
+
+        def _diag_build_defaults():
+            assets = {
+                "growth": {"mean": 0.12, "vol": 0.25},
+                "diversified": {"mean": 0.09, "vol": 0.10},
+                "income": {"mean": 0.06, "vol": 0.06},
+            }
+            cfg = {
+                "years": 30,
+                "n_sims": 500,
+                "initial": 100000.0,
+                "monthly": 12000.0 / 12.0,
+                "seed": 42,
+                "weights": {"growth": 0.40, "diversified": 0.40, "income": 0.20},
+                "fees": {"base": 0.01, "sub_div": 0.005, "sub_inc": 0.005},
+[2025-09-23T17:57:45] tokens used: 1460
+
+[2025-09-23T17:58:16] thinking
+
+**Outlining remediation and validation plan**
+
+I’m mapping out a detailed plan to address outdated dependencies, notebook UI usage, and interactive WASM export verification while keeping the repo read-only. I’ll include issue identification with approximate line references, testing steps, documentation updates, and highlight critical questions—especially focusing on the portfolio_growth_simulator notebook’s structure, cross-cell variable collisions, and ensuring GitHub Pages exports remain fully interactive.
+[2025-09-23T17:58:17] exec bash -lc "nl -ba notebooks/portfolio_growth_simulator.py | sed -n '1,40p'" in /Users/srvo/dev/notebooks
+[2025-09-23T17:58:17] bash -lc "nl -ba notebooks/portfolio_growth_simulator.py | sed -n '1,40p'" succeeded in 26ms:
+     1	# /// script
+     2	# requires-python = ">=3.9"
+     3	# dependencies = [
+     4	#   "marimo>=0.10.12,<0.11",
+     5	#   "numpy==2.3.3",
+     6	#   "pandas==2.3.2",
+     7	#   "plotly==6.3.0",
+     8	# ]
+     9	# ///
+    10	
+    11	import marimo
+    12	
+    13	__generated_with = "0.16.1"
+    14	app = marimo.App(width="medium")
+    15	
+    16	
+    17	@app.cell
+    18	def _():
+    19	    import marimo
+    20	    mo = marimo
+[2025-09-23T17:58:17] tokens used: 5016
+
+[2025-09-23T17:58:20] thinking
+
+**Identifying line numbers for extra instructions**
+[2025-09-23T17:58:22] exec bash -lc "nl -ba notebooks/portfolio_growth_simulator.py | sed -n '1900,2105p'" in /Users/srvo/dev/notebooks
+[2025-09-23T17:58:22] bash -lc "nl -ba notebooks/portfolio_growth_simulator.py | sed -n '1900,2105p'" succeeded in 11ms:
+  1900	
+  1901	    Updated Trinity Study data confirms the **4% rule remains viable for 30-year periods** but requires high stock allocations of 50-75%. International analysis reveals sobering results: only **5 countries historically supported 4%+ withdrawal rates** even with perfect foresight - Sweden (4.5%), Canada (4.4%), New Zealand (4.1%), Denmark (4.1%), and the United States (4.0%). Global diversification improved success rates from **65.7% to 78.3%** for 4% withdrawals, still leaving substantial failure risk.
+  1902	
+  1903	    CAPE ratio valuations show **0.77 correlation with safe withdrawal rates**, providing more predictive power than for returns themselves. At CAPE ratios above 20, the 4% rule shows **37% failure rates**, rising to **43.2% when markets are also at all-time highs**. Current CAPE levels near 27 suggest withdrawal rates closer to **4.13%** for traditional planning horizons. Dynamic strategies like Guyton-Klinger guardrails allow higher starting rates of **5.2-5.6%** but historically required spending cuts up to **59% in adverse scenarios** like the 1966 cohort.
+  1904	
+  1905	    Rising equity glidepaths from **30% stocks at retirement to 60% over 10 years** prove most effective in high-valuation environments, while static 60% equity allocations perform well in favorable markets. Tax-efficient withdrawal sequencing can reduce taxes by **40%+** and extend portfolio longevity by 1-2 years through optimal ordering of account types.
+  1906	
+  1907	    ## Implementation best practices enhance simulation accuracy
+  1908	
+  1909	    Block bootstrapping with **3-6 month blocks** captures serial correlation and mean reversion more effectively than traditional Monte Carlo's assumption of independent returns. Factor-specific optimal block sizes range from **1 month for investment factors to 5-6 months for low volatility strategies**. Circular bootstrapping prevents endpoint bias when sampling from limited historical data.
+  1910	
+  1911	    Rebalancing studies consistently show **annual rebalancing as optimal**, with more frequent rebalancing increasing costs without proportional benefits. Threshold-based approaches using **5% absolute deviation triggers** or **25% relative triggers for small allocations** generated **56 basis points of additional return** over 10 years in T. Rowe Price research. Volatility reduction of approximately **18%** results from annual rebalancing versus buy-and-hold strategies.
+  1912	
+  1913	    Inflation modeling requires distributional approaches rather than point estimates. The 1970s saw inflation ranging from **6.2% to 13.5%** with high volatility, while the 2021-2023 surge peaked at **9.1%** before moderating. Tax-loss harvesting adds **1.08% annually on average**, ranging from **0.51% in low-volatility periods to 2.13% during high-volatility markets** like the Great Depression era.
+  1914	
+  1915	    Standard practice uses **10,000 simulations** for most applications, with convergence studies showing 1,000 sufficient for basic analysis and 100,000 for precision-critical applications. Monthly time steps provide optimal balance between computational efficiency and accuracy. Sensitivity analysis should test **±1-2% variations in returns and ±20-50% variations in volatility** to assess model robustness.
+  1916	
+  1917	    ## Extreme events provide critical tail risk parameters
+  1918	
+  1919	    Historical market crashes demonstrate the severity of tail events that Monte Carlo simulations must capture. The 1929 crash saw **89% peak-to-trough decline** with 25-year recovery to previous highs. Black Monday 1987 produced a **22.6% single-day decline**, the largest percentage drop in history. The 2000-2002 dot-com crash erased **49% from the S&P 500 and 78% from NASDAQ**, while 2008's financial crisis created a **57% drawdown** over 17 months. The 2020 COVID crash compressed a **34% decline into just one month** before the fastest recovery in history.
+[2025-09-23T17:58:22] tokens used: 39716
+
+[2025-09-23T17:58:51] thinking
+
+**Drafting remediation and validation plan**
+
+I’m outlining a detailed multi-section plan with clear, concise bullet points to address notebook triage, dependency updates, gating mechanisms, branding fallback, and GitHub Pages WASM export. I’ll include file and line references, propose supporting notebooks and validation commands, and draft open questions to clarify unknowns while making sure everything fits neatly into themed lists. This structured approach should guide cleanup, validation, documentation, and help confirm requirements step by step.
+[2025-09-23T17:58:52] codex
+
+**Remediation Plan**
+- Update the PEP‑723 header to reflect the currently targeted toolchain (marimo 0.16.x, modern numpy/pandas/plotly) so uv installs match the runtime recorded in `__generated_with` (`notebooks/portfolio_growth_simulator.py:1`).
+- Replace the accidental prompt transcript embedded in the final markdown cell with curated, brand-compliant content or move it to external docs; the current text bloats exports and breaks tone (`notebooks/portfolio_growth_simulator.py:1927`).
+- Revisit the run-gating/state cells to confirm the Run/Reset/token logic still works after export and that no computation occurs until the disclaimer switch is true (`notebooks/portfolio_growth_simulator.py:1071`, `notebooks/portfolio_growth_simulator.py:1137`).
+- Normalize color usage so every chart pulls from the loaded palette and includes colorblind-safe fallbacks, verifying the brand loader is the single source of truth (`notebooks/portfolio_growth_simulator.py:1228`, `notebooks/portfolio_growth_simulator.py:2042`).
+- Audit data-export cells for duplication, CSV size, and data-URI encoding to ensure downloads stay compatible across marimo releases (`notebooks/portfolio_growth_simulator.py:430`, `notebooks/portfolio_growth_simulator.py:472`).
+
+**Validation Plan**
+- Run `uv run marimo check notebooks/portfolio_growth_simulator.py` per AGENTS.md to catch structural issues before export (`AGENTS.md:6`).
+- Execute `python3 -m py_compile notebooks/portfolio_growth_simulator.py` to guarantee syntax soundness (`AGENTS.md:8`).
+- Perform a headless diagnostic with `python notebooks/portfolio_growth_simulator.py --diag --sims 200 --years 10 --out diag_ci_local` and diff the CSVs against expected templates for regression.
+- Export a fresh WASM build via `python -m marimo export html-wasm notebooks/portfolio_growth_simulator.py --output docs/portfolio_growth_simulator.html`, then load it with the browser tool to verify interactivity, Run/Reset gating, and download links.
+- After notebook changes, re-run the `docs/index.html` generation logic locally to ensure the Pages workflow (`.github/workflows/publish.yml:36`) continues to package the static site without missing assets.
+
+**Documentation**
+- Extend `README.md` with explicit WASM testing instructions referencing the Pages workflow expectations (`.github/workflows/publish.yml:51`) and brand palette source (`Ethical-Capital-Brand-Kit/palette/palette.json:2`).
+- Add a short “Maintainer checklist” excerpt in `AGENTS.md` covering Run/Reset gate verification and WASM smoke tests so future edits stay compliant.
+- Document the diagnostic CLI usage and expected CSV artifacts in `docs/` so reviewers know how to validate outputs offline.
+
+**Supporting Notebooks**
+- Create a lightweight `notebooks/portfolio_growth_regression.py` that replays a frozen config and emits summary stats for CI drift detection.
+- Prototype a `notebooks/brand_palette_preview.py` to visualize palette swatches and confirm accessibility before applying new colors.
+- Consider a `notebooks/wasm_smoke_harness.py` that loads exported HTML via marimo’s testing hooks to automate interactivity checks.
+
+**Open Questions**
+- Should the long-form research narrative now living in `notebooks/portfolio_growth_simulator.py:1873` move to an external whitepaper or trimmed appendix inside the notebook?
+- Do we need additional controls in English mode for fees/bridge settings, or should those remain Nerd-only?
+- Is the current 500-simulation default adequate for Pages performance, or should we lower it for quicker WASM startup?
+- Would you like automated snapshot testing for the CSV exports to guard against accidental schema changes?
+[2025-09-23T17:59:09] tokens used: 7218

@@ -1,0 +1,16 @@
+# Python
+__pycache__/
+.pytest_cache/
+.mypy_cache/
+*.pyc
+
+# macOS
+.DS_Store
+
+# uv caches
+.venv/
+.python-version
+
+# Pages output (built by Actions)
+docs/
+

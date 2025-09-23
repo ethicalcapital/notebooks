@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="628" viewBox="0 0 1200 628">
+  <defs>
+    <linearGradient id="bg2" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#14b8a6" />
+      <stop offset="40%" stop-color="#581c87" />
+      <stop offset="100%" stop-color="#6b21a8" />
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="628" fill="url(#bg2)" />
+  <g transform="translate(600,250)" text-anchor="middle">
+    <image href="../logos/ecic-logo.svg" x="-160" y="-100" width="320" height="200" />
+  </g>
+  <g transform="translate(600,460)" text-anchor="middle" fill="#ffffff" font-family="Outfit, Raleway, Arial, sans-serif">
+    <text font-size="44" font-weight="700">Invest with your values, without compromise</text>
+  </g>
+</svg>
