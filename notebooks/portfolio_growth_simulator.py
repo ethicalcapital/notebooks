@@ -375,6 +375,8 @@ def _(
     # Per-year distribution boxplots to clarify spread over time
     fig_boxes = None
     if simulation_results:
+        import plotly as _plotly
+        _go = _plotly.graph_objects
         import plotly.graph_objects as go
         step = max(1, int(boxplot_step_years.value))
         months = simulation_results["months"]
@@ -384,7 +386,7 @@ def _(
             years_to_show.append(total_years_box)
 
         infl_box = inflation_rate.value / 100.0
-        fig_boxes = go.Figure()
+        fig_boxes = _go.Figure()
 
         for y in years_to_show:
             box_month_idx = int(y * 12)
@@ -392,7 +394,7 @@ def _(
             if show_real.value:
                 vals = vals / ((1.0 + infl_box) ** (y))
             fig_boxes.add_trace(
-                go.Box(
+                _go.Box(
                     y=vals,
                     name=f"Year {y}",
                     boxmean=True,
@@ -1196,7 +1198,8 @@ def _(
     if error_msg:
         mo.callout(f"Error: {error_msg}", kind="danger")
     elif simulation_results:
-        import plotly.graph_objects as go
+        import plotly as _plotly
+        _go = _plotly.graph_objects
         mo.md("## Results")
         try:
             mo.callout(
@@ -1206,7 +1209,7 @@ def _(
         except Exception:
             pass
         # Create main visualization (fan chart)
-        fig = go.Figure()
+        fig = _go.Figure()
 
         # Prepare data (real vs nominal)
         time_index_plot = simulation_results["time_index"]
@@ -1232,7 +1235,7 @@ def _(
         # 95% band (area between p5 and p95) — hide in English mode
         if show_band_95.value and not english_mode.value:
             fig.add_trace(
-                go.Scatter(
+                _go.Scatter(
                     x=time_index_plot,
                     y=p95_line,
                     line=dict(color="rgba(34,139,34,0.0)"),
@@ -1242,7 +1245,7 @@ def _(
                 )
             )
             fig.add_trace(
-                go.Scatter(
+                _go.Scatter(
                     x=time_index_plot,
                     y=p5_line,
                     fill="tonexty",
@@ -1256,7 +1259,7 @@ def _(
         # 25–75% band (inner area) — always show, but use gray palette
         if show_band_75.value:
             fig.add_trace(
-                go.Scatter(
+                _go.Scatter(
                     x=time_index_plot,
                     y=p75_line,
                     line=dict(color="rgba(0,0,0,0.0)"),
@@ -1266,7 +1269,7 @@ def _(
                 )
             )
             fig.add_trace(
-                go.Scatter(
+                _go.Scatter(
                     x=time_index_plot,
                     y=p25_line,
                     fill="tonexty",
@@ -1279,7 +1282,7 @@ def _(
 
         # Median and mean lines — executive friendly colors
         fig.add_trace(
-            go.Scatter(
+            _go.Scatter(
                 x=time_index_plot,
                 y=p50_line,
                 mode="lines",
@@ -1291,7 +1294,7 @@ def _(
         # Mean line
         mean_vals = adj(df_plot["Mean"].values)
         fig.add_trace(
-            go.Scatter(
+            _go.Scatter(
                 x=time_index_plot,
                 y=mean_vals,
                 mode="lines",
@@ -1313,7 +1316,7 @@ def _(
             scen_line, scen_name = p75_line, "75th Percentile"
         if scen_line is not None:
             fig.add_trace(
-                go.Scatter(
+                _go.Scatter(
                     x=time_index_plot,
                     y=scen_line,
                     mode="lines",
@@ -1326,7 +1329,7 @@ def _(
         # Percentile edge lines — in English mode, show only 25/75 around the median
         if english_mode.value:
             fig.add_trace(
-                go.Scatter(
+                _go.Scatter(
                     x=time_index_plot,
                     y=p75_line,
                     mode="lines",
@@ -1336,7 +1339,7 @@ def _(
                 )
             )
             fig.add_trace(
-                go.Scatter(
+                _go.Scatter(
                     x=time_index_plot,
                     y=p25_line,
                     mode="lines",
@@ -1347,7 +1350,7 @@ def _(
             )
         else:
             fig.add_trace(
-                go.Scatter(
+                _go.Scatter(
                     x=time_index_plot,
                     y=p95_line,
                     mode="lines",
@@ -1357,7 +1360,7 @@ def _(
                 )
             )
             fig.add_trace(
-                go.Scatter(
+                _go.Scatter(
                     x=time_index_plot,
                     y=p75_line,
                     mode="lines",
@@ -1367,7 +1370,7 @@ def _(
                 )
             )
             fig.add_trace(
-                go.Scatter(
+                _go.Scatter(
                     x=time_index_plot,
                     y=p25_line,
                     mode="lines",
@@ -1377,7 +1380,7 @@ def _(
                 )
             )
             fig.add_trace(
-                go.Scatter(
+                _go.Scatter(
                     x=time_index_plot,
                     y=p5_line,
                     mode="lines",
@@ -1402,7 +1405,7 @@ def _(
                     # Draw each as a faint line
                     for overlay_path in overlay_paths:
                         fig.add_trace(
-                            go.Scattergl(
+                            _go.Scattergl(
                                 x=time_index_plot,
                                 y=overlay_path,
                                 mode="lines",
@@ -1422,7 +1425,7 @@ def _(
                     paths_xs = np.concatenate(paths_xs)
                     paths_ys = np.concatenate(paths_ys)
                     fig.add_trace(
-                        go.Scattergl(
+                        _go.Scattergl(
                             x=paths_xs,
                             y=paths_ys,
                             mode="lines",
@@ -1574,7 +1577,8 @@ def _(
     final_vals_hist = None
     percentiles_to_mark = None
     if simulation_results:
-        import plotly.graph_objects as go
+        import plotly as _plotly
+        _go = _plotly.graph_objects
         # Create distribution of final values
         final_vals_hist = simulation_results["all_results"][:, -1]
         infl_hist = inflation_rate.value / 100.0
@@ -1582,9 +1586,9 @@ def _(
         if show_real.value:
             final_vals_hist = final_vals_hist / ((1.0 + infl_hist) ** horizon_years_hist)
 
-        fig_dist = go.Figure()
+        fig_dist = _go.Figure()
         fig_dist.add_trace(
-            go.Histogram(
+            _go.Histogram(
                 x=final_vals_hist,
                 nbinsx=30,
                 name="Final Portfolio Values",
@@ -1661,7 +1665,8 @@ def _(
     # Final value CDF (exceedance curve) clarifies probabilities
     fig_cdf = None
     if simulation_results:
-        import plotly.graph_objects as go
+        import plotly as _plotly
+        _go = _plotly.graph_objects
         final_vals_cdf = simulation_results["all_results"][:, -1]
         infl_cdf = inflation_rate.value / 100.0
         horizon_years_cdf = simulation_results["months"] / 12.0
@@ -1672,9 +1677,9 @@ def _(
         cdf = np.arange(1, len(cdf_xs) + 1) / len(cdf_xs)
         exceedance_y = 1.0 - cdf
 
-        fig_cdf = go.Figure()
+        fig_cdf = _go.Figure()
         fig_cdf.add_trace(
-            go.Scatter(
+            _go.Scatter(
                 x=cdf_xs,
                 y=exceedance_y,
                 mode="lines",
@@ -1735,7 +1740,8 @@ def _(
     years_in_withdrawal = None
 
     if simulation_results and withdrawal_start_year.value > 0:
-        import plotly.graph_objects as go
+        import plotly as _plotly
+        _go = _plotly.graph_objects
         # Analyze withdrawal phase success
         withdrawal_month = int(withdrawal_start_year.value * 12)
         if withdrawal_month < simulation_results["all_results"].shape[1]:
@@ -1764,9 +1770,9 @@ def _(
                 survival_rates.append(surviving)
                 years_in_withdrawal.append(step_idx / 12.0)
 
-            fig_survival = go.Figure()
+            fig_survival = _go.Figure()
             fig_survival.add_trace(
-                go.Scatter(
+                _go.Scatter(
                     x=years_in_withdrawal,
                     y=survival_rates,
                     mode="lines",
@@ -1804,9 +1810,9 @@ def _(
                 # If a row never depletes, argmax gives 0; mask those using depleted
                 ttd_years = first_zero_idx[depleted] / 12.0
 
-                fig_ttd = go.Figure()
+                fig_ttd = _go.Figure()
                 fig_ttd.add_trace(
-                    go.Histogram(
+                    _go.Histogram(
                         x=ttd_years,
                         nbinsx=max(5, int(withdrawal_values.shape[1] / (12 * boxplot_step_years.value))),
                         marker_color=brand.get("warning", "#f59e0b"),
