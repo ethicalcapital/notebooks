@@ -20,13 +20,10 @@ def _():
     mo = marimo
     import numpy as np
     import pandas as pd
-    # Import plotly at the top level so WASM export infers the correct package name
-    import plotly as _plotly
-    go = _plotly.graph_objects
     import warnings
 
     warnings.filterwarnings("ignore")
-    return go, mo, np, pd
+    return mo, np, pd
 
 
 @app.cell
@@ -370,7 +367,6 @@ def _(mo):
 @app.cell
 def _(
     boxplot_step_years,
-    go,
     inflation_rate,
     mo,
     show_real,
@@ -379,6 +375,7 @@ def _(
     # Per-year distribution boxplots to clarify spread over time
     fig_boxes = None
     if simulation_results:
+        import plotly.graph_objects as go
         step = max(1, int(boxplot_step_years.value))
         months = simulation_results["months"]
         total_years_box = int(months // 12)
@@ -1182,7 +1179,6 @@ def _(
     brand,
     english_mode,
     error_msg,
-    go,
     inflation_rate,
     log_scale,
     mo,
@@ -1200,6 +1196,7 @@ def _(
     if error_msg:
         mo.callout(f"Error: {error_msg}", kind="danger")
     elif simulation_results:
+        import plotly.graph_objects as go
         mo.md("## Results")
         try:
             mo.callout(
@@ -1565,7 +1562,6 @@ def _(
 def _(
     brand,
     english_mode,
-    go,
     inflation_rate,
     mo,
     np,
@@ -1578,6 +1574,7 @@ def _(
     final_vals_hist = None
     percentiles_to_mark = None
     if simulation_results:
+        import plotly.graph_objects as go
         # Create distribution of final values
         final_vals_hist = simulation_results["all_results"][:, -1]
         infl_hist = inflation_rate.value / 100.0
@@ -1654,7 +1651,6 @@ def _(
 def _(
     brand,
     english_mode,
-    go,
     inflation_rate,
     mo,
     np,
@@ -1665,6 +1661,7 @@ def _(
     # Final value CDF (exceedance curve) clarifies probabilities
     fig_cdf = None
     if simulation_results:
+        import plotly.graph_objects as go
         final_vals_cdf = simulation_results["all_results"][:, -1]
         infl_cdf = inflation_rate.value / 100.0
         horizon_years_cdf = simulation_results["months"] / 12.0
@@ -1722,7 +1719,6 @@ def _(
 def _(
     boxplot_step_years,
     brand,
-    go,
     inflation_rate,
     mo,
     np,
@@ -1739,6 +1735,7 @@ def _(
     years_in_withdrawal = None
 
     if simulation_results and withdrawal_start_year.value > 0:
+        import plotly.graph_objects as go
         # Analyze withdrawal phase success
         withdrawal_month = int(withdrawal_start_year.value * 12)
         if withdrawal_month < simulation_results["all_results"].shape[1]:
