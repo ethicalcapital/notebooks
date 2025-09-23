@@ -64,11 +64,9 @@ jobs:
           fi
           touch docs/.nojekyll
 
-      - name: Upload diagnostic CSVs
-        uses: actions/upload-artifact@v4
-        with:
-          name: diag_ci_csv
-          path: diag_ci
+      - name: Generate index.html
+        shell: bash
+        run: |
           python - <<'PY'
           import os, glob
           files = sorted(glob.glob('docs/*.html'))
@@ -144,6 +142,12 @@ jobs:
           )
           open('docs/index.html','w').write(html)
           PY
+
+      - name: Upload diagnostic CSVs
+        uses: actions/upload-artifact@v4
+        with:
+          name: diag_ci_csv
+          path: diag_ci
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
