@@ -30,6 +30,21 @@ jobs:
         run: |
           python -m pip install --upgrade pip
           pip install "marimo>=0.16,<0.17"
+          # Light deps for diagnostic headless run (no UI)
+          pip install numpy pandas
+
+      - name: Diagnostic engine run (headless CSV export)
+        shell: bash
+        run: |
+          set -euo pipefail
+          # Quick run to verify compute engine; writes CSVs under diag_ci/
+          python notebooks/portfolio_growth_simulator.py --diag --years 5 --sims 100 --out diag_ci
+          echo "--- percentiles.csv (first 5 lines) ---"
+          head -n 5 diag_ci/percentiles.csv || true
+          echo "--- final_values.csv (first 5 lines) ---"
+          head -n 5 diag_ci/final_values.csv || true
+          echo "--- sample_paths.csv (first 3 lines) ---"
+          head -n 3 diag_ci/sample_paths.csv || true
 
       - name: Export notebooks to docs
         shell: bash
@@ -48,6 +63,12 @@ jobs:
             cp -R assets "docs/"
           fi
           touch docs/.nojekyll
+
+      - name: Upload diagnostic CSVs
+        uses: actions/upload-artifact@v4
+        with:
+          name: diag_ci_csv
+          path: diag_ci
           python - <<'PY'
           import os, glob
           files = sorted(glob.glob('docs/*.html'))
