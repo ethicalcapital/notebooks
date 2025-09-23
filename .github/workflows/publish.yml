@@ -29,7 +29,7 @@ jobs:
       - name: Install marimo
         run: |
           python -m pip install --upgrade pip
-          pip install "marimo>=0.10.12,<0.11"
+          pip install "marimo>=0.16,<0.17"
 
       - name: Export notebooks to docs
         shell: bash
@@ -40,7 +40,7 @@ jobs:
           for f in notebooks/*.py; do
             base=$(basename "$f" .py)
             # Export interactive HTML (WASM) so notebooks run on GitHub Pages
-            python -m marimo export "$f" --to html-wasm --output "docs/${base}.html"
+            python -m marimo export html-wasm "$f" --output "docs/${base}.html"
           done
           python - <<'PY'
           import os, glob
