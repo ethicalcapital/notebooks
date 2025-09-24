@@ -15,13 +15,13 @@ app = marimo.App(width="medium")
 @app.cell
 def _():
     import marimo as mo
-    return mo,
+    return (mo,)
 
 
 @app.cell
 def _():
     import numpy as np
-    return np,
+    return (np,)
 
 
 @app.cell
@@ -102,25 +102,11 @@ def _(accept, mo, reset, run):
     should_run = ready and run_clicks > reset_clicks and run_clicks > 0
     status = "✅ Ready" if ready else "⚠️ Accept the disclaimer to run"
     mo.callout(f"{status} · Run: {run_clicks} · Reset: {reset_clicks}", kind="info")
-    return ready, reset_clicks, run_clicks, should_run
+    return (should_run,)
 
 
 @app.cell
-def _(
-    accept,
-    annual_savings,
-    current_value,
-    growth,
-    mo,
-    np,
-    ready,
-    reset,
-    reset_clicks,
-    run,
-    run_clicks,
-    should_run,
-    years,
-):
+def _(annual_savings, current_value, growth, mo, np, should_run, years):
     results = None
     if should_run:
         years_span = int(years.value)
@@ -154,4 +140,3 @@ def _(
 
 if __name__ == "__main__":
     app.run()
-
