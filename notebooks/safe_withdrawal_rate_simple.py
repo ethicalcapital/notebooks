@@ -158,23 +158,23 @@ def _(mo, stock_allocation):
 def _(mo):
     withdrawal_strategy = mo.ui.dropdown(
         label="Strategy preset",
-        options={
-            "bengen": "Bengen 4% Rule",
-            "conservative": "Conservative Variable (3.5% + 1%)",
-            "moderate": "Moderate Variable (3% + 1.5%)",
-            "aggressive": "Aggressive Variable (2.5% + 2%)",
-            "custom": "Custom Parameters"
-        },
-        value="bengen"
+        options=[
+            "Bengen 4% Rule",
+            "Conservative Variable (3.5% + 1%)",
+            "Moderate Variable (3% + 1.5%)",
+            "Aggressive Variable (2.5% + 2%)",
+            "Custom Parameters"
+        ],
+        value="Bengen 4% Rule"
     )
 
-    # Preset configurations - keys must match dropdown option keys
+    # Preset configurations - keys must match dropdown values
     presets = {
-        "bengen": {"fixed": 4.0, "variable": 0.0, "floor": 4.0},
-        "conservative": {"fixed": 3.5, "variable": 1.0, "floor": 3.5},
-        "moderate": {"fixed": 3.0, "variable": 1.5, "floor": 3.0},
-        "aggressive": {"fixed": 2.5, "variable": 2.0, "floor": 2.5},
-        "custom": {"fixed": 4.0, "variable": 0.0, "floor": 4.0}
+        "Bengen 4% Rule": {"fixed": 4.0, "variable": 0.0, "floor": 4.0},
+        "Conservative Variable (3.5% + 1%)": {"fixed": 3.5, "variable": 1.0, "floor": 3.5},
+        "Moderate Variable (3% + 1.5%)": {"fixed": 3.0, "variable": 1.5, "floor": 3.0},
+        "Aggressive Variable (2.5% + 2%)": {"fixed": 2.5, "variable": 2.0, "floor": 2.5},
+        "Custom Parameters": {"fixed": 4.0, "variable": 0.0, "floor": 4.0}
     }
 
     withdrawal_strategy
@@ -206,14 +206,20 @@ def _(mo, presets, withdrawal_strategy):
     mo.vstack([
         fixed_pct,
         variable_pct,
-        floor_pct,
-        mo.md(f"""
-        **Withdrawal Formula:**
-
-        Annual withdrawal = max({floor_pct.value}% × initial, {fixed_pct.value}% × initial + {variable_pct.value}% × current_portfolio)
-        """).callout(kind="info")
+        floor_pct
     ])
     return fixed_pct, floor_pct, selected_preset, variable_pct
+
+
+@app.cell
+def _(fixed_pct, floor_pct, mo, variable_pct):
+    # Display withdrawal formula in separate cell to avoid UI value access error
+    mo.md(f"""
+    **Withdrawal Formula:**
+
+    Annual withdrawal = max({floor_pct.value}% × initial, {fixed_pct.value}% × initial + {variable_pct.value}% × current_portfolio)
+    """).callout(kind="info")
+    return
 
 
 @app.cell
