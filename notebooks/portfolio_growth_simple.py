@@ -62,6 +62,35 @@ def _(mo):
 
 
 @app.cell
+def _(accept, disclaimer, mo):
+    # Display disclaimer and accept switch
+    mo.vstack([
+        disclaimer,
+        accept
+    ])
+    return
+
+
+@app.cell
+def _(annual_savings, current_value, growth, mo, years):
+    # Display input controls
+    mo.md("## Input Parameters").center()
+    mo.vstack([
+        mo.hstack([current_value, annual_savings], justify="space-around"),
+        years,
+        growth
+    ])
+    return
+
+
+@app.cell
+def _(mo, reset, run):
+    # Display action buttons
+    mo.hstack([run, reset], justify="center")
+    return
+
+
+@app.cell
 def _(accept, mo, reset, run):
     token = mo.state(0)
     run_clicks = int(getattr(run, "value", 0) or 0)
