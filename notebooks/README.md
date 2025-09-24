@@ -13,15 +13,29 @@ All notebooks export to interactive HTML (WASM) on every push to `main`.
 
 ## Run Locally
 
-**Portfolio Growth Simulator:**
-- Development: `uvx marimo -d run notebooks/portfolio_growth_simulator.py`
-- Standard: `uv run notebooks/portfolio_growth_simulator.py`
+### Prerequisites
 
-**Safe Withdrawal Rate Calculator:**
-- `uvx marimo run notebooks/safe_withdrawal_rate.py`
+**Install marimo with full dependencies:**
+```bash
+uv tool install "marimo[recommended]" --with numpy --with pandas --with plotly
+```
+
+This installs marimo with optional dependencies (altair, duckdb, openai, polars) plus the required notebook libraries.
+
+### Running Notebooks
+
+**Portfolio Growth Simulator:**
+- Development: `marimo edit notebooks/portfolio_growth_simulator.py`
+- Production: `marimo run notebooks/portfolio_growth_simulator.py`
+
+**Safe Withdrawal Rate Calculator (Full):**
+- `marimo run notebooks/safe_withdrawal_rate.py`
+
+**Safe Withdrawal Rate Calculator (WASM-Compatible):**
+- `marimo run notebooks/safe_withdrawal_rate_simple.py`
 
 **Simple Portfolio Calculator:**
-- `uvx marimo run notebooks/portfolio_growth_simple.py`
+- `marimo run notebooks/portfolio_growth_simple.py`
 
 ### Diagnostic script mode (no UI)
 
@@ -56,6 +70,25 @@ The SWR calculator includes:
 - **Risk Analysis:** Configurable risk aversion parameters
 - **Failure Rate Analysis:** Probability of portfolio exhaustion
 - **Multiple Presets:** Bengen 4% rule, conservative, moderate, and aggressive strategies
+
+## Troubleshooting
+
+### Service Worker Errors
+If you see browser console errors like:
+```
+Error registering service worker: TypeError: Cannot read properties of null (reading 'postMessage')
+```
+
+**Solutions:**
+1. **Use Edit Mode Instead:** `marimo edit notebook.py` (works around service worker issues)
+2. **Try Different Browser:** Chrome typically has better marimo compatibility than Safari/Firefox
+3. **Clear Browser Cache:** Hard refresh with Cmd+Shift+R
+4. **Check Full Dependencies:** Ensure you installed `marimo[recommended]` with all optional dependencies
+
+### Button/UI Not Working
+- **Backend Errors:** Check terminal for runtime errors (tuple access, import issues)
+- **Cell Dependencies:** Ensure UI elements are created in one cell and accessed in separate dependent cells
+- **Missing Dependencies:** Install complete marimo: `uv tool install "marimo[recommended]" --with numpy --with pandas --with plotly`
 
 ## Checks
 
