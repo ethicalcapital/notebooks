@@ -14,10 +14,14 @@ app = marimo.App(width="small")
 
 @app.cell
 def _():
-    import marimo
-    mo = marimo
+    import marimo as mo
+    return mo,
+
+
+@app.cell
+def _():
     import plotly.graph_objects as go
-    return go, mo
+    return go,
 
 
 @app.cell
