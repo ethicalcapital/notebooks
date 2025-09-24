@@ -16,14 +16,18 @@ app = marimo.App(width="medium")
 
 @app.cell
 def _():
-    import marimo
-    mo = marimo
+    import marimo as mo
+    return mo,
+
+
+@app.cell
+def _():
     import numpy as np
     import pandas as pd
     import warnings
 
     warnings.filterwarnings("ignore")
-    return mo, np, pd
+    return np, pd
 
 
 @app.cell
