@@ -21,7 +21,6 @@ def _():
     import pandas as pd
     import plotly.graph_objects as go
     from plotly.subplots import make_subplots
-
     return go, make_subplots, mo, np, pd
 
 
@@ -29,18 +28,18 @@ def _():
 def _(mo):
     mo.md(
         """
-        # 🎯 Safe Withdrawal Rate Calculator (WASM)
+    # 🎯 Safe Withdrawal Rate Calculator (WASM)
 
-        This simplified SWR calculator runs entirely in your browser using historical market data.
-        It implements key concepts from retirement planning research including variable withdrawal
-        strategies and portfolio sustainability analysis.
+    This simplified SWR calculator runs entirely in your browser using historical market data.
+    It implements key concepts from retirement planning research including variable withdrawal
+    strategies and portfolio sustainability analysis.
 
-        **Features:**
-        - Historical backtesting simulation
-        - Multiple withdrawal strategies
-        - Portfolio failure analysis
-        - Interactive parameter adjustment
-        """
+    **Features:**
+    - Historical backtesting simulation
+    - Multiple withdrawal strategies
+    - Portfolio failure analysis
+    - Interactive parameter adjustment
+    """
     )
     return
 
@@ -63,7 +62,7 @@ def _(mo):
     )
 
     mo.vstack([disclaimer, accept_disclaimer])
-    return accept_disclaimer, disclaimer
+    return (accept_disclaimer,)
 
 
 @app.cell
@@ -101,8 +100,7 @@ def _(np, pd):
     }, index=pd.Index(years, name='year'))
 
     data_info = f"📈 Simulated historical data: {len(years)} years ({years[0]}-{years[-1]})"
-
-    return bond_returns, data_info, returns_data, stock_returns, years
+    return data_info, returns_data
 
 
 @app.cell
@@ -113,7 +111,7 @@ def _(data_info, mo):
 
 @app.cell
 def _(mo):
-    mo.md("## Portfolio Configuration")
+    mo.md("""## Portfolio Configuration""")
     return
 
 
@@ -208,7 +206,7 @@ def _(mo, presets, withdrawal_strategy):
         variable_pct,
         floor_pct
     ])
-    return fixed_pct, floor_pct, selected_preset, variable_pct
+    return fixed_pct, floor_pct, variable_pct
 
 
 @app.cell
@@ -228,7 +226,7 @@ def _(mo):
     run_simulation = mo.ui.button(label="🚀 Run SWR Simulation")
 
     mo.hstack([run_simulation], justify="center")
-    return run_simulation,
+    return (run_simulation,)
 
 
 @app.cell
@@ -238,12 +236,11 @@ def _(
     floor_pct,
     initial_portfolio,
     mo,
-    np,
-    returns_data,
     retirement_years,
+    returns_data,
     run_simulation,
     stock_allocation,
-    variable_pct
+    variable_pct,
 ):
     # Simple SWR simulation function
     def simulate_swr(returns_df, n_years, stock_pct, bond_pct, initial_val,
@@ -333,8 +330,7 @@ def _(
             mo.md(f"❌ Simulation error: {error_message}").callout(kind="danger")
     else:
         mo.md("👆 Configure your parameters above and click 'Run SWR Simulation'").callout(kind="info")
-
-    return error_message, results, simulate_swr, simulation_results
+    return (simulation_results,)
 
 
 @app.cell
@@ -348,7 +344,7 @@ def _(mo, simulation_results):
 
 
 @app.cell
-def _(initial_portfolio, mo, simulation_results):
+def _(mo, np, pd, simulation_results):
     # Calculate and display key metrics
     if simulation_results:
         # Calculate key statistics
@@ -373,11 +369,11 @@ def _(initial_portfolio, mo, simulation_results):
         mo.ui.table(pd.DataFrame(metrics_data), label="Key Metrics")
     else:
         ""
-    return avg_spending, avg_withdrawals, exhausted_count, failure_rate, final_portfolios, metrics_data, min_final
+    return failure_rate, min_final
 
 
 @app.cell
-def _(failure_rate, go, mo, simulation_results):
+def _(failure_rate, go, make_subplots, mo, simulation_results):
     # Create visualization
     if simulation_results:
         # Portfolio value paths chart
@@ -430,11 +426,11 @@ def _(failure_rate, go, mo, simulation_results):
         mo.ui.plotly(fig)
     else:
         ""
-    return fig, final_values, _i, result, sample_results, _years
+    return
 
 
 @app.cell
-def _(failure_rate, initial_portfolio, min_final, mo, simulation_results):
+def _(failure_rate, min_final, mo, simulation_results):
     # Summary insights
     if simulation_results:
         mo.md(f"""
@@ -463,7 +459,8 @@ def _(failure_rate, initial_portfolio, min_final, mo, simulation_results):
 
 @app.cell
 def _(mo):
-    mo.md("""
+    mo.md(
+        """
     ## 💡 Understanding Safe Withdrawal Rates
 
     **What is SWR?** The Safe Withdrawal Rate is the percentage of your retirement portfolio
@@ -481,7 +478,8 @@ def _(mo):
     - **Bengen 4% Rule:** Withdraw 4% of initial portfolio, adjusted for inflation
     - **Variable Strategies:** Combine fixed base with variable component based on portfolio performance
     - **Floor Strategies:** Ensure minimum income level regardless of market performance
-    """)
+    """
+    )
     return
 
 
