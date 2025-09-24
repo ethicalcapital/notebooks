@@ -100,7 +100,7 @@ def _(accept, mo, reset, run):
     run_clicks = int(getattr(run, "value", 0) or 0)
     reset_clicks = int(getattr(reset, "value", 0) or 0)
     ready = bool(accept.value)
-    if ready and run_clicks > reset_clicks and token.value != run_clicks:
+    if ready and run_clicks > reset_clicks and token() != run_clicks:
         token.set(run_clicks)
     status = "✅ Ready" if ready else "⚠️ Accept the disclaimer to run"
     mo.callout(f"{status} · Run: {run_clicks} · Reset: {reset_clicks}", kind="info")
@@ -124,7 +124,7 @@ def _(
     years,
 ):
     results = None
-    if ready and token.value:
+    if ready and token():
         years_span = int(years.value)
         monthly = float(annual_savings.value) / 12.0
         rate = float(growth.value) / 100.0
