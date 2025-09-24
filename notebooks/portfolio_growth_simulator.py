@@ -42,102 +42,28 @@ def _(mo):
 
 
 @app.cell
-def _(
-    asset_params,
-    growth_pct,
-    diversified_pct,
-    income_pct,
-    current_value,
-    annual_savings,
-    years_to_simulate,
-    num_simulations,
-    random_seed,
-    base_fee_all,
-    sub_fee_diversified,
-    sub_fee_income,
-    use_regime,
-    regime_mode,
-    fixed_regime,
-    p_stay_bull,
-    p_stay_normal,
-    p_stay_bear,
-    sampling_method,
-    return_dist,
-    t_df,
-    block_len,
-    withdrawal_start_year,
-    withdrawal_rate,
-    inflation_rate,
-    bridge_enable,
-    bridge_start_years,
-    bridge_duration_years,
-    bridge_rate,
-    total_allocation,
-):
+def _():
+    # This cell will be populated later when all UI elements are defined
+    # For now, return placeholder values to prevent loading errors
     cfg = {
-        "years": int(years_to_simulate.value),
-        "n_sims": int(num_simulations.value),
-        "initial": float(current_value.value),
-        "monthly": float(annual_savings.value) / 12.0,
-        "seed": int(random_seed.value) if random_seed.value is not None else 42,
-        "weights": {
-            "growth": float(growth_pct) / 100.0,
-            "diversified": float(diversified_pct) / 100.0,
-            "income": float(income_pct) / 100.0,
-        },
-        "fees": {
-            "base": float(base_fee_all.value) / 100.0,
-            "sub_div": float(sub_fee_diversified.value) / 100.0,
-            "sub_inc": float(sub_fee_income.value) / 100.0,
-        },
-        "regimes": {
-            "use": bool(use_regime.value),
-            "mode": str(regime_mode.value),
-            "fixed": str(fixed_regime.value),
-            "p_stay": {
-                "bull": float(p_stay_bull.value),
-                "normal": float(p_stay_normal.value),
-                "bear": float(p_stay_bear.value),
-            },
-        },
-        "sampling": {
-            "method": str(sampling_method.value),
-            "dist": str(return_dist.value),
-            "t_df": int(t_df.value),
-            "block_len": int(block_len.value),
-        },
-        "withdrawals": {
-            "start_year": int(withdrawal_start_year.value),
-            "rate": float(withdrawal_rate.value) / 100.0,
-            "bridge": {
-                "enable": bool(bridge_enable.value),
-                "start": int(bridge_start_years.value),
-                "duration": int(bridge_duration_years.value),
-                "rate": float(bridge_rate.value) / 100.0,
-            },
-        },
-        "inflation": float(inflation_rate.value) / 100.0,
+        "years": 30,
+        "n_sims": 1000,
+        "initial": 100000.0,
+        "monthly": 1000.0,
+        "seed": 42,
+        "weights": {"growth": 0.6, "diversified": 0.3, "income": 0.1},
+        "fees": {"base": 0.005, "sub_div": 0.002, "sub_inc": 0.003},
+        "regimes": {"use": False, "mode": "Historical", "fixed": "Normal", "p_stay": {"bull": 0.8, "normal": 0.9, "bear": 0.7}},
+        "sampling": {"method": "Historical", "dist": "Normal", "t_df": 5, "block_len": 12},
+        "withdrawals": {"start_year": 25, "rate": 0.04, "bridge": {"enable": False, "start": 20, "duration": 5, "rate": 0.03}},
+        "inflation": 0.025,
+    }
+    assets = {
+        "Growth": {"mean": 0.08, "vol": 0.15},
+        "Diversified": {"mean": 0.06, "vol": 0.10},
+        "Income": {"mean": 0.04, "vol": 0.05}
     }
     err = None
-    # Basic validation (UI-only). Full gating stays in compute cell.
-    if total_allocation != 100:
-        err = "Allocations must sum to 100%."
-    elif cfg["years"] <= 0:
-        err = "Years to simulate must be at least 1."
-    elif cfg["n_sims"] <= 0:
-        err = "Number of simulations must be positive."
-    elif cfg["initial"] < 0:
-        err = "Initial investment cannot be negative."
-    elif cfg["monthly"] < 0:
-        err = "Monthly contribution cannot be negative."
-    if cfg["seed"] < 0:
-        cfg["seed"] = abs(cfg["seed"])
-    if cfg["sampling"]["dist"] == "Student t" and cfg["sampling"]["t_df"] < 3:
-        cfg["sampling"]["t_df"] = 3
-    if cfg["sampling"]["block_len"] < 1:
-        cfg["sampling"]["block_len"] = 1
-
-    assets = {k: {"mean": float(v["mean_return"]), "vol": float(v["volatility"])} for k, v in asset_params.items()}
     return cfg, assets, err
 
 
@@ -625,6 +551,107 @@ def _(
 
 
 @app.cell
+def _(
+    asset_params,
+    growth_pct,
+    diversified_pct,
+    income_pct,
+    current_value,
+    annual_savings,
+    years_to_simulate,
+    num_simulations,
+    random_seed,
+    base_fee_all,
+    sub_fee_diversified,
+    sub_fee_income,
+    use_regime,
+    regime_mode,
+    fixed_regime,
+    p_stay_bull,
+    p_stay_normal,
+    p_stay_bear,
+    sampling_method,
+    return_dist,
+    t_df,
+    block_len,
+    withdrawal_start_year,
+    withdrawal_rate,
+    inflation_rate,
+    bridge_enable,
+    bridge_start_years,
+    bridge_duration_years,
+    bridge_rate,
+    total_allocation,
+):
+    # Real configuration cell - now that all UI elements are defined
+    cfg_real = {
+        "years": int(years_to_simulate.value),
+        "n_sims": int(num_simulations.value),
+        "initial": float(current_value.value),
+        "monthly": float(annual_savings.value) / 12.0,
+        "seed": int(random_seed.value) if random_seed.value is not None else 42,
+        "weights": {
+            "growth": float(growth_pct) / 100.0,
+            "diversified": float(diversified_pct) / 100.0,
+            "income": float(income_pct) / 100.0,
+        },
+        "fees": {
+            "base": float(base_fee_all.value) / 100.0,
+            "sub_div": float(sub_fee_diversified.value) / 100.0,
+            "sub_inc": float(sub_fee_income.value) / 100.0,
+        },
+        "regimes": {
+            "use": bool(use_regime.value),
+            "mode": str(regime_mode.value),
+            "fixed": str(fixed_regime.value),
+            "p_stay": {
+                "bull": float(p_stay_bull.value),
+                "normal": float(p_stay_normal.value),
+                "bear": float(p_stay_bear.value),
+            },
+        },
+        "sampling": {
+            "method": str(sampling_method.value),
+            "dist": str(return_dist.value),
+            "t_df": int(t_df.value),
+            "block_len": int(block_len.value),
+        },
+        "withdrawals": {
+            "start_year": int(withdrawal_start_year.value),
+            "rate": float(withdrawal_rate.value) / 100.0,
+            "bridge": {
+                "enable": bool(bridge_enable.value),
+                "start": int(bridge_start_years.value),
+                "duration": int(bridge_duration_years.value),
+                "rate": float(bridge_rate.value) / 100.0,
+            },
+        },
+        "inflation": float(inflation_rate.value) / 100.0,
+    }
+    err_real = None
+    # Basic validation (UI-only). Full gating stays in compute cell.
+    if total_allocation != 100:
+        err_real = "Allocations must sum to 100%."
+    elif cfg_real["years"] <= 0:
+        err_real = "Years to simulate must be at least 1."
+    elif cfg_real["n_sims"] <= 0:
+        err_real = "Number of simulations must be positive."
+    elif cfg_real["initial"] < 0:
+        err_real = "Initial investment cannot be negative."
+    elif cfg_real["monthly"] < 0:
+        err_real = "Monthly contribution cannot be negative."
+    if cfg_real["seed"] < 0:
+        cfg_real["seed"] = abs(cfg_real["seed"])
+    if cfg_real["sampling"]["dist"] == "Student t" and cfg_real["sampling"]["t_df"] < 3:
+        cfg_real["sampling"]["t_df"] = 3
+    if cfg_real["sampling"]["block_len"] < 1:
+        cfg_real["sampling"]["block_len"] = 1
+
+    assets_real = {k: {"mean": float(v["mean_return"]), "vol": float(v["volatility"])} for k, v in asset_params.items()}
+    return cfg_real, assets_real, err_real
+
+
+@app.cell
 def _(mo):
     # Withdrawal configuration
     withdrawal_start_year = mo.ui.slider(
@@ -1030,7 +1057,7 @@ def _(
     total_allocation,
     error_msg,
     simulation_results,
-    err,
+    err_real,
 ):
     # Status panel just below controls, using marimo.status when available
     def _status(kind: str, text: str):
@@ -1049,7 +1076,7 @@ def _(
     running = (clicks > resets) and can_run and (not simulation_results) and (not error_msg)
 
     # Include config validation error if present
-    _cfg_err = err
+    _cfg_err = err_real
 
     if not accept_disclaimer.value:
         _status("info", "Please accept the disclaimer to enable Run.")
@@ -1153,8 +1180,8 @@ def _(
     withdrawal_rate,
     withdrawal_start_year,
     years_to_simulate,
-    cfg,
-    assets,
+    cfg_real,
+    assets_real,
     simulate_portfolio,
     token,
 ):
@@ -1168,7 +1195,7 @@ def _(
         try:
             # token value change indicates a new run request
             _ = token.value  # depend on token only; value unused otherwise
-            simulation_results = simulate_portfolio(cfg, assets)
+            simulation_results = simulate_portfolio(cfg_real, assets_real)
         except Exception as e:
             error_msg = f"Simulation error: {e}"
             simulation_results = None
